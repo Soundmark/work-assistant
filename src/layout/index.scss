@@ -1,0 +1,14 @@
+.ant-layout{
+  height: 100%;
+  .ant-layout-sider{
+    min-width: auto !important;
+    flex: 0 !important;
+    width: 60px !important;
+  }
+  .ant-menu-item{
+    padding: 0 10px;
+    i{
+      font-size: 26px;
+    }
+  }
+}

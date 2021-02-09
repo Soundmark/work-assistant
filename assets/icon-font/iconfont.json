@@ -1,0 +1,30 @@
+{
+  "id": "2371846",
+  "name": "work-assistant",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "571269",
+      "name": "查阅日志",
+      "font_class": "chayuerizhi",
+      "unicode": "e661",
+      "unicode_decimal": 58977
+    },
+    {
+      "icon_id": "16852646",
+      "name": "颜色选择器",
+      "font_class": "colorSelector",
+      "unicode": "e63c",
+      "unicode_decimal": 58940
+    },
+    {
+      "icon_id": "19665046",
+      "name": "翻译",
+      "font_class": "translate",
+      "unicode": "eaf0",
+      "unicode_decimal": 60144
+    }
+  ]
+}

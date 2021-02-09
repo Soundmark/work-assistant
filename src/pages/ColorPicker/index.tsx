@@ -1,7 +1,7 @@
 import React from 'react';
 
 function ColorPicker() {
-  return 123;
+  return <div>123</div>;
 }
 
 export default ColorPicker;
