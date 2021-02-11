@@ -5,10 +5,36 @@
     flex: 0 !important;
     width: 60px !important;
   }
+  .ant-menu{
+    background-color:  #098FE9;
+  }
+  .ant-menu-vertical{
+    border: none;
+  }
+  .ant-menu-item:not(:last-child){
+    margin: 0 !important;
+  }
   .ant-menu-item{
     padding: 0 10px;
+    margin: 0 !important;
+    height: 50px !important;
+    line-height: 50px !important;
     i{
-      font-size: 26px;
+      font-size: 28px;
     }
+    a{
+      color: #fff;
+    }
+    a:hover{
+      color: #000;
+    }
+  }
+  .ant-menu-item-selected{
+    a{
+      color: #000;
+    }
+  }
+  .ant-layout-sider{
+    background-color:  #098FE9;
   }
 }

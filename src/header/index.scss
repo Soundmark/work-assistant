@@ -9,6 +9,7 @@
   width: 130px;
   padding-left: 10px;
   line-height: 40px;
+  height: 100%;
   cursor: pointer;
   .icon{
     width: 30px;
@@ -18,8 +19,10 @@
   -webkit-app-region: no-drag;
   width: 100px;
   line-height: 40px;
+  height: 100%;
   .ant-col{
     text-align: center;
+    height: 40px;
   }
   .ant-col:hover{
     background-color: #0A73BA;
@@ -30,4 +33,5 @@
 }
 #header .drag-section {
   width: calc(100% - 230px);
+  height: 100%;
 }
