@@ -6,6 +6,41 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "8743928",
+      "name": "Dog",
+      "font_class": "Dog",
+      "unicode": "e749",
+      "unicode_decimal": 59209
+    },
+    {
+      "icon_id": "4485682",
+      "name": "最大化",
+      "font_class": "zuidahua",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "6160694",
+      "name": "最小化",
+      "font_class": "zuixiaohua",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
+    },
+    {
+      "icon_id": "9673157",
+      "name": "关  闭",
+      "font_class": "guanbi",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    },
+    {
+      "icon_id": "18311585",
+      "name": "最大化 细",
+      "font_class": "zuidahuaxi",
+      "unicode": "e64c",
+      "unicode_decimal": 58956
+    },
+    {
       "icon_id": "571269",
       "name": "查阅日志",
       "font_class": "chayuerizhi",

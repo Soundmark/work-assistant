@@ -11,7 +11,7 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
-import { app, BrowserWindow, shell } from 'electron';
+import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -75,6 +75,7 @@ const createWindow = async () => {
     webPreferences: {
       nodeIntegration: true,
     },
+    frame: false,
   });
 
   mainWindow.loadURL(`file://${__dirname}/index.html`);
@@ -129,4 +130,23 @@ app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) createWindow();
+});
+
+// 处理最小化
+ipcMain.on('window-min', () => {
+  mainWindow?.minimize();
+});
+
+// 处理最大化
+ipcMain.on('window-max', () => {
+  if (mainWindow?.isMaximized()) {
+    mainWindow.restore();
+  } else {
+    mainWindow?.maximize();
+  }
+});
+
+// 处理关闭
+ipcMain.on('window-close', () => {
+  mainWindow?.close();
 });

@@ -1,5 +1,5 @@
 .ant-layout{
-  height: 100%;
+  height: calc(100% - 40px);
   .ant-layout-sider{
     min-width: auto !important;
     flex: 0 !important;

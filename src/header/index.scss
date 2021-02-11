@@ -1,0 +1,33 @@
+#header {
+  -webkit-app-region: drag;
+  background-color: #098FE9;
+  color: #fff;
+  height: 40px;
+}
+#header .title {
+  -webkit-app-region: no-drag;
+  width: 130px;
+  padding-left: 10px;
+  line-height: 40px;
+  cursor: pointer;
+  .icon{
+    width: 30px;
+  }
+}
+#header .window-control {
+  -webkit-app-region: no-drag;
+  width: 100px;
+  line-height: 40px;
+  .ant-col{
+    text-align: center;
+  }
+  .ant-col:hover{
+    background-color: #0A73BA;
+  }
+  .ant-col:last-child:hover{
+    background-color: #DA2811;
+  }
+}
+#header .drag-section {
+  width: calc(100% - 230px);
+}
