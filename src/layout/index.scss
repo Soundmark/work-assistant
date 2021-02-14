@@ -4,6 +4,7 @@
     min-width: auto !important;
     flex: 0 !important;
     width: 60px !important;
+    background-color:  #098FE9;
   }
   .ant-menu{
     background-color:  #098FE9;
@@ -30,11 +31,13 @@
     }
   }
   .ant-menu-item-selected{
+    background-color: #fff !important;
     a{
       color: #000;
     }
   }
-  .ant-layout-sider{
-    background-color:  #098FE9;
+  .ant-layout-content{
+    background-color: #fff;
   }
+
 }
