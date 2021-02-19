@@ -8,6 +8,10 @@ const layout = {
   wrapperCol: { span: 16 },
 };
 
+const RGB = 'RGB';
+const HSL = 'HSL';
+const CMYK = 'CMYK';
+
 function ColorPicker() {
   const [form] = Form.useForm();
   const bar = useRef();
@@ -18,27 +22,28 @@ function ColorPicker() {
   const [canSlide, setCanSlide] = useState(false);
   const [canMovePointer, setCanMovePointer] = useState(false);
   const [curHsl, setCurHsl] = useState([0, 100, 50]);
-  const paramConfig = ['#', 'RGB', 'HSL', 'CMYK'];
+  const paramConfig = ['#', RGB, HSL, CMYK];
 
-  const setColor = (hsl: number[]) => {
+  const setColor = (hsl: number[], type?: string) => {
     window.localStorage.setItem('color', JSON.stringify(hsl));
     const color = Color.hsl(hsl);
     const rgb = color.rgb().array();
     const hex = color.hex();
     const cmyk = color.cmyk().array();
-    form.setFields([
+    const fields: any = [
       { name: '#', value: hex.slice(1) },
-      { name: 'R', value: Math.round(rgb[0]) },
-      { name: 'G', value: Math.round(rgb[1]) },
-      { name: 'B', value: Math.round(rgb[2]) },
-      { name: 'H', value: Math.round(hsl[0]) },
-      { name: 'S', value: Math.round(hsl[1]) },
-      { name: 'L', value: Math.round(hsl[2]) },
-      { name: 'C', value: Math.round(cmyk[0]) },
-      { name: 'M', value: Math.round(cmyk[1]) },
-      { name: 'Y', value: Math.round(cmyk[2]) },
-      { name: 'K', value: Math.round(cmyk[3]) },
-    ]);
+      type !== 'RGB' && { name: 'R', value: Math.round(rgb[0]) },
+      type !== 'RGB' && { name: 'G', value: Math.round(rgb[1]) },
+      type !== 'RGB' && { name: 'B', value: Math.round(rgb[2]) },
+      type !== 'HSL' && { name: 'H', value: Math.round(hsl[0]) },
+      type !== 'HSL' && { name: 'S', value: Math.round(hsl[1]) },
+      type !== 'HSL' && { name: 'L', value: Math.round(hsl[2]) },
+      type !== 'CMYK' && { name: 'C', value: Math.round(cmyk[0]) },
+      type !== 'CMYK' && { name: 'M', value: Math.round(cmyk[1]) },
+      type !== 'CMYK' && { name: 'Y', value: Math.round(cmyk[2]) },
+      type !== 'CMYK' && { name: 'K', value: Math.round(cmyk[3]) },
+    ].filter(Boolean);
+    form.setFields(fields);
   };
 
   const setPos = (hsl: number[]) => {
@@ -46,12 +51,42 @@ function ColorPicker() {
     const barRect = bar.current.getBoundingClientRect();
     const pickerRect = picker.current.getBoundingClientRect();
     const slidePos = (H * barRect.height) / 360;
-    const pointerX = (S * pickerRect.width) / 100;
-    const pointerY =
-      pickerRect.height -
-      (L * pickerRect.width * pickerRect.height) /
-        50 /
-        (2 * pickerRect.width - pointerX);
+    let pointerX;
+    let pointerY;
+    if (S === 100) {
+      if (L > 50) {
+        pointerY = 0;
+        pointerX =
+          2 * pickerRect.width -
+          (L * pickerRect.width * pickerRect.height) / 50 / pickerRect.height;
+      } else {
+        pointerX = pickerRect.width;
+        pointerY =
+          pickerRect.height -
+          (L * pickerRect.width * pickerRect.height) /
+            50 /
+            (2 * pickerRect.width - pointerX);
+      }
+    } else if (S === 0) {
+      if (L === 0) {
+        pointerY = pickerRect.height;
+        pointerX = 0;
+      } else {
+        pointerX = 0;
+        pointerY =
+          pickerRect.height -
+          (L * pickerRect.width * pickerRect.height) /
+            50 /
+            (2 * pickerRect.width - pointerX);
+      }
+    } else {
+      pointerX = (S * pickerRect.width) / 100;
+      pointerY =
+        pickerRect.height -
+        (L * pickerRect.width * pickerRect.height) /
+          50 /
+          (2 * pickerRect.width - pointerX);
+    }
     setSliderPos(slidePos);
     setPointerPosX(pointerX);
     setPointerPosY(pointerY);
@@ -107,7 +142,14 @@ function ColorPicker() {
   };
 
   const calColorSL = (x: number, y: number, rect: any) => {
-    const S = Math.round((100 * x) / rect.width);
+    let S;
+    if (y === 0) {
+      S = 100;
+    } else if (y === rect.height) {
+      S = 0;
+    } else {
+      S = Math.round((100 * x) / rect.width);
+    }
     const L = Math.round(
       (50 * (rect.height - y) * (1 + (rect.width - x) / rect.width)) /
         rect.height
@@ -166,9 +208,40 @@ function ColorPicker() {
     slidePicker(e);
   };
 
+  // 计算色块主颜色
   const getPickerColor = (H: number) => {
     const color = Color.hsl([H, 100, 50]);
     return color.hex();
+  };
+
+  const onInputChange = (type: string) => {
+    if (RGB.includes(type)) {
+      console.log('rgb');
+      const { R, G, B } = form.getFieldsValue();
+      const rgb = [R, G, B].map((item) => parseFloat(item));
+      const hsl = Color.rgb(rgb).hsl().array();
+      setColor(hsl, RGB);
+      setPos(hsl);
+    } else if (HSL.includes(type)) {
+      console.log('hsl');
+      const { H, S, L } = form.getFieldsValue();
+      const hsl = [H, S, L].map((item) => parseFloat(item));
+      setColor(hsl, HSL);
+      setPos(hsl);
+    } else if (CMYK.includes(type)) {
+      console.log('cmyk');
+      const { C, M, Y, K } = form.getFieldsValue();
+      const cmyk = [C, M, Y, K].map((item) => parseFloat(item));
+      const hsl = Color.cmyk(cmyk).hsl().array();
+      setColor(hsl, CMYK);
+      setPos(hsl);
+    }
+  };
+
+  const onInputBlur = (type: string) => {
+    if (type === '#') {
+      console.log('#');
+    }
   };
 
   return (
@@ -219,7 +292,10 @@ function ColorPicker() {
                       label={subItem}
                       name={subItem}
                     >
-                      <Input />
+                      <Input
+                        onChange={() => onInputChange(subItem)}
+                        onBlur={() => onInputBlur(subItem)}
+                      />
                     </Form.Item>
                   ))}
                 </div>
